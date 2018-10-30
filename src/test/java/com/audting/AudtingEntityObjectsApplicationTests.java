@@ -28,10 +28,7 @@ import com.audting.model.State;
 import com.audting.query.utils.AuditQueryResult;
 import com.audting.query.utils.AuditQueryUtils;
 import com.audting.repository.AddressRepository;
-import com.audting.repository.CityRepository;
-import com.audting.repository.CountryRepository;
 import com.audting.repository.ProjectRepository;
-import com.audting.repository.StateRepository;
 import com.audting.service.AccountService;
 
 @RunWith(SpringRunner.class)
@@ -61,10 +58,6 @@ public class AudtingEntityObjectsApplicationTests {
 
     }
 
-    @Test
-    public void contextLoads() {
-    }
-
     // step : 1 Mock the data
     @Test
     public void mockData() {
@@ -85,18 +78,6 @@ public class AudtingEntityObjectsApplicationTests {
 
     }
 
-    // @Test
-    // @Transactional
-    public void changeAddressToAccount() {
-        this.account = this.accountService.getAccountById(2L);
-        this.account.setAddress(this.addressRepository.findById(5L).get());
-        this.account = this.accountService.update(this.account);
-        Project project = this.projectRepository.findById(1L).get();
-        project.setAccount(this.account);
-        this.projectRepository.save(project);
-
-    }
-
     private AccountHistory getAccountHistory(AuditQueryResult<Account> auditQueryResult) {
         return new AccountHistory(auditQueryResult.getEntity(), auditQueryResult.getRevision(),
                 auditQueryResult.getType());
@@ -107,7 +88,6 @@ public class AudtingEntityObjectsApplicationTests {
     @Transactional
     public void getRevisions() throws ParseException {
         try {
-            System.out.println("hi");
             AuditQuery auditQuery = auditReader.createQuery().forRevisionsOfEntity(Account.class, false, false);
             List<AuditQueryResult<Account>> list = AuditQueryUtils.getAuditQueryResultsWithRevInfo(auditQuery,
                     Account.class);
